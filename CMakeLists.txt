@@ -3,4 +3,4 @@ project(DiscreateMath)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(DiscreateMath main.cpp)
+add_executable(DiscreateMath main.cpp Encode/Encode.h Encode/Encode.cpp Decode/Decode.h Decode/Decode.cpp)
