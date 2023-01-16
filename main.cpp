@@ -2,7 +2,6 @@
 #include "Decode/Decode.h"
 
 #include <fstream>
-#include <cassert>
 
 int main() {
 
@@ -16,12 +15,13 @@ int main() {
     std::map<char, std::string> huffman_table;
     BuildHuffmanCodes(symbols, huffman_table);
 
-    WriteToFile(source_path, encode_path, huffman_table);
+    WriteToFile(source_path, encode_path, huffman_table, symbols);
 
     std::ifstream input_encode(encode_path);
     std::map<std::string, char> code;
 
     RebuildHuffmanTable(code, input_encode);
+
     WriteSourceFile(decode_path, code, input_encode);
 
     return 0;

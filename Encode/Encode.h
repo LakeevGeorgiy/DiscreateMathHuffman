@@ -32,4 +32,5 @@ void HuffmanCodes(MinHeadNode* head, std::string code, std::map<char, std::strin
 void BuildHuffmanCodes(const std::vector<std::pair<char, uint32_t>>& symbols,
                        std::map<char, std::string>& huffman_table);
 
-void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table);
+void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table,
+                 std::vector<std::pair<char, uint32_t>>& symbols);

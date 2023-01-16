@@ -63,14 +63,16 @@ void BuildHuffmanCodes(const std::vector<std::pair<char, uint32_t>>& symbols,
     HuffmanCodes(min_heap.top(), "", huffman_table);
 }
 
-void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table) {
+void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table,
+                 std::vector<std::pair<char, uint32_t>>& symbols) {
 
     std::ifstream in(source_path);
     std::ofstream out(encode_path, std::ios::binary);
 
-    out << huffman_table.size() << "\n";
-    for (auto& symbol : huffman_table){
-        out << symbol.first << " " << symbol.second << "\n";
+    out << symbols.size() << "\n";
+    for (auto& symbol : symbols){
+        out.write((char*)&symbol.first, 1);
+        out.write((char*)&symbol.second, 4);
     }
 
     char symbol;
