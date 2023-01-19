@@ -65,20 +65,26 @@ void BuildHuffmanCodes(const std::vector<std::pair<char, uint32_t>>& symbols,
     HuffmanCodes(min_heap.top(), "", huffman_table);
 }
 
+uint32_t CountLetters(const std::string& path, uint32_t tellg){
+    std::ifstream file(path, std::ios::ate | std::ios::binary);
+    uint32_t end_of_file = file.tellg();
+    uint32_t number_of_letters = end_of_file - tellg;
+
+    return number_of_letters;
+}
+
 void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table,
                  std::vector<std::pair<char, uint32_t>>& symbols) {
 
-    std::ifstream in(source_path);
+    std::ifstream in(source_path, std::ios::binary);
     std::ofstream out(encode_path, std::ios::binary);
 
     size_t size = symbols.size();
     out.write((char*)&size, 4);
-    std::cout << "size: " << size << "\n";
 
     for (auto& symbol : symbols){
         out.write((char*)&symbol.first, 1);
         out.write((char*)&symbol.second, 4);
-        std::cout << "symbol: " << symbol.first << " freq: " << symbol.second << "\n";
     }
 
     char symbol;
@@ -88,11 +94,11 @@ void WriteToFile(const std::string& source_path, const std::string& encode_path,
     int cnt = 0;
 
     while (in.read((char*)&symbol, 1)) {
-        //std::cout << ++cnt << "\n";
 
         for (int j = 0; j < huffman_table[symbol].size(); j++){
             if (i == -1){
                 i = 7;
+                cnt++;
                 out.write((char*)&code,1);
                 code = 0;
             }

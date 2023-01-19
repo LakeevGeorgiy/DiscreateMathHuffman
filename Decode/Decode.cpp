@@ -17,10 +17,8 @@ void RebuildHuffmanTable(std::map<std::string, char>& code, std::ifstream& input
     }
 
     BuildHuffmanCodes(symbols, huffman_table);
-    std::cout << "Rebuild\n";
     for (auto& symbol : huffman_table){
         code.emplace(symbol.second, symbol.first);
-        std::cout << "symbol: " << symbol.first << " freq: " << symbol.second << "\n";
     }
 }
 
@@ -33,12 +31,11 @@ void WriteSourceFile(const std::string& decode_path, std::map<std::string, char>
     int cnt = 0;
 
     while (input_encode.read((char*)&symbol, 1)) {
-        //std::cout << ++cnt << "\n";
         for (int i = 7; i >= 0; i--){
 
             if (code.find(word) != code.end()){
                 char letter = code.find(word)->second;
-                //std::cout << word << " " << letter << "\n";
+                cnt++;
                 out.write((char*)&letter, 1);
                 word = "";
             }
