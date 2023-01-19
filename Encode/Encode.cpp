@@ -1,5 +1,7 @@
 #include "Encode.h"
 
+#include <bitset>
+
 void ReadFromFile(const std::string& path, std::vector<std::pair<char, uint32_t>>& symbols){
     std::ifstream in(path);
 
@@ -69,14 +71,39 @@ void WriteToFile(const std::string& source_path, const std::string& encode_path,
     std::ifstream in(source_path);
     std::ofstream out(encode_path, std::ios::binary);
 
-    out << symbols.size() << "\n";
+    size_t size = symbols.size();
+    out.write((char*)&size, 4);
+    std::cout << "size: " << size << "\n";
+
     for (auto& symbol : symbols){
         out.write((char*)&symbol.first, 1);
         out.write((char*)&symbol.second, 4);
+        std::cout << "symbol: " << symbol.first << " freq: " << symbol.second << "\n";
     }
 
     char symbol;
-    while (in.get(symbol)) {
-        out << huffman_table[symbol];
+    int i = 7;
+    uint8_t code = 0;
+
+    int cnt = 0;
+
+    while (in.read((char*)&symbol, 1)) {
+        //std::cout << ++cnt << "\n";
+
+        for (int j = 0; j < huffman_table[symbol].size(); j++){
+            if (i == -1){
+                i = 7;
+                out.write((char*)&code,1);
+                code = 0;
+            }
+            if (huffman_table[symbol][j] == '0'){
+                i--;
+                continue;
+            }
+            uint8_t bit = 1 << (i);
+            code += bit;
+            i--;
+        }
     }
+    out.write((char*)&code, 1);
 }
