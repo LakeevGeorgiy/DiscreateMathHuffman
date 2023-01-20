@@ -25,12 +25,14 @@ struct compare {
     }
 };
 
-void ReadFromFile(const std::string& path, std::vector<std::pair<char, uint32_t>>& symbol);
+void ReadFromFile(const std::string& path, std::map<char, std::vector<std::pair<char, uint32_t>>>& symbol);
 
 void HuffmanCodes(MinHeadNode* head, std::string code, std::map<char, std::string>& huffman_table);
 
 void BuildHuffmanCodes(const std::vector<std::pair<char, uint32_t>>& symbols,
                        std::map<char, std::string>& huffman_table);
 
-void WriteToFile(const std::string& source_path, const std::string& encode_path, std::map<char, std::string>& huffman_table,
-                 std::vector<std::pair<char, uint32_t>>& symbols);
+void WriteTable(std::ofstream& encode_out,
+                std::map<char, std::vector<std::pair<char, uint32_t>>>& symbols);
+
+void WriteToFile(const std::string& source_path, std::ofstream& out, std::map<char, std::map<char, std::string>>& huffman_table);
